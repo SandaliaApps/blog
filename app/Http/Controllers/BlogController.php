@@ -12,7 +12,13 @@ class BlogController extends Controller
      */
     public function index()
     {
-        //
+        if(Auth::user()->is_admin === 1){
+            $blogs = Blog::paginate(10);
+        }
+
+        $blogs = Auth::user()->blogs->paginate(10);
+
+        return $blogs;
     }
 
     /**
@@ -28,7 +34,32 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            
+            DB::beginTransaction();
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'body' => 'required|string|max:1000',
+                'tags' => 'required|string|max:200'
+            ]);
+
+            $blog = new Blog();
+
+            $blog->name = $request->name;
+            $blog->body = $request->body;
+            $blog->tags = $request->tags;
+            $blog->user_id = Auth::user()->id;
+
+            DB::rollBack();
+
+            DB::commit();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+
+            DB::rollBack();
+        }
     }
 
     /**
@@ -44,7 +75,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-        //
+
     }
 
     /**
@@ -52,7 +83,30 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        //
+        try {
+            
+            DB::beginTransaction();
+
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'body' => 'required|string|max:1000',
+                'tags' => 'required|string|max:200'
+            ]);
+
+            $blog->name = $request->name;
+            $blog->body = $request->body;
+            $blog->tags = $request->tags;
+            $blog->updated_by = Auth::user()->id;
+
+            DB::rollBack();
+
+            DB::commit();
+
+        } catch (\Throwable $th) {
+            //throw $th;
+            
+            DB::rollBack();
+        }
     }
 
     /**
@@ -60,6 +114,6 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+        $blog->delete();
     }
 }
