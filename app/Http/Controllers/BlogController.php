@@ -48,7 +48,7 @@ class BlogController extends Controller
         $blog->body = $request->body;
         $blog->tags = $request->tags;
         $blog->user_id = Auth()->user()->id;
-        $blog->save();
+        $blog->saveOrFail();
 
         return redirect()->back();
     }
@@ -84,7 +84,7 @@ class BlogController extends Controller
         $blog->body = $request->body;
         $blog->tags = $request->tags;
         $blog->updated_by = Auth()->user()->id;
-        $blog->save();
+        $blog->saveOrFail();
 
         return redirect()->back();
     }
@@ -94,7 +94,7 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        $blog->delete();
+        $blog->deleteOrFail();
 
         return redirect()->route('blogs.index');
     }

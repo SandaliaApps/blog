@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,13 @@ Route::group(['prefix' => config('app.apiversion'), 'as' => config('app.apiversi
         Route::apiResource('users', UserController::class);
         Route::apiResource('blogs', BlogController::class);
     });
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+        Route::get('login', 'login');
+        Route::get('register', 'register');
+        Route::post('logout', 'logout')->middleware('auth:sanctum');
+    });
     
-});
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
 });
