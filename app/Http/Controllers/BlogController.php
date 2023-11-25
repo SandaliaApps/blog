@@ -18,9 +18,9 @@ class BlogController extends Controller
         if(Auth()->user()->is_admin === 1){
 
             $blogs = Blog::paginate(10);
+        }else{
+            $blogs = User::findOrFail(Auth()->user()->id)->blogs;
         }
-
-        $blogs = User::findOrFail(Auth()->user()->id)->blogs;
 
         return view('blog.blogs',['blogs' => $blogs]);
     }
@@ -60,7 +60,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        //
+        return view('blog.show',['blog' => $blog]);
     }
 
     /**
@@ -97,5 +97,7 @@ class BlogController extends Controller
     public function destroy(Blog $blog)
     {
         $blog->delete();
+
+        return redirect()->route('blogs.index');
     }
 }

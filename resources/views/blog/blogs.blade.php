@@ -31,7 +31,7 @@
                             @foreach ($blogs as $post)
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        {{$post->name}}
+                                        <a href="{{ route('blogs.show',$post->id) }}">{{$post->name}}</a>
                                     </th>
                                     <td class="px-6 py-4">
                                         {{$post->body}}
@@ -41,7 +41,13 @@
                                     </td>
                                     <td class="px-6 py-4">
                                         <a href="{{ route('blogs.edit',$post->id) }}">Edit</a>
-                                        <a href="{{ route('blogs.destroy',$post->id) }}">Delete</a>
+                                        <button onclick="document.getElementById('deleteForm').submit();">Delete</button>
+
+                                        <form method="POST" action="{{ route('blogs.destroy',$post->id) }}" id="deleteForm">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                        
                                     </td>
                                 </tr>
                             @endforeach
