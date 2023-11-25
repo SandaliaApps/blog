@@ -12,8 +12,8 @@ class Blog extends Model
     /**
      * Get the blog that owns the comment.
      */
-    public function blog(): BelongsTo
+    public function blog()
     {
-        return $this->belongsTo(Post::class);
+        return $this->belongsTo(User::class);
     }
 }

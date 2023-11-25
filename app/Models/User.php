@@ -63,10 +63,10 @@ class User extends Authenticatable
      * Get blogs that the user owns.
      */
 
-    public function blogs() : HasMany
+    public function blogs()
     {
         
-        $this->hasMany(Blog::class);
+        return $this->hasMany(Blog::class);
 
     }
 }
