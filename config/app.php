@@ -20,6 +20,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | API VERSION
+    |--------------------------------------------------------------------------
+    |
+    | Here you will be specify what the api route prefix will be.
+    | It is optional In this case, 'v1' stands for version one, 
+    | it could be anything you want it to be.
+    |
+    */
+
+    'apiversion' => env('API_VERSION', 'v1'),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application Environment
     |--------------------------------------------------------------------------
     |

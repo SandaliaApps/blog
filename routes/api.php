@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\BlogController;
+use App\Http\Controllers\Api\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,7 +16,15 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+Route::group(['prefix' => config('app.apiversion'), 'as' => config('app.apiversion')], function () {
+    
+    Route::middleware('auth:sanctum')->group(function(){
+        // Api Resources
+        Route::apiResource('users', UserController::class);
+        Route::apiResource('blogs', BlogController::class);
+    });
+    
+});
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
