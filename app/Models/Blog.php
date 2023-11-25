@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Blog extends Model
 {
     use HasFactory;
+
+    /**
+     * Get the blog that owns the comment.
+     */
+    public function blog(): BelongsTo
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

@@ -58,4 +58,15 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * Get blogs that the user owns.
+     */
+
+    public function blogs() : HasMany
+    {
+        
+        $this->hasMany(Blog::class);
+
+    }
 }
