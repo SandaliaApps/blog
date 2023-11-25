@@ -10,7 +10,9 @@
 > rename .env.example file to .env
 > Configure database details in the .env file
 7. `php artisan migrate`
-8. `php artisan serve`
+9. `php artisan db:seed`
+10. `php artisan serve`
+> login email `admin@admin.com` or `user@user.com` with password `password`
 
 ### Api endpoints
 > all request should contain `Authorization:"Bearer {token}"` including `logout` endpoints
