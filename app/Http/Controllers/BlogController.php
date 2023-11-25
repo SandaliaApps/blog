@@ -6,6 +6,7 @@ use App\Models\Blog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class BlogController extends Controller
 {
@@ -29,7 +30,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        return view('blog.add');
     }
 
     /**
@@ -37,32 +38,21 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            
-            DB::beginTransaction();
+        $blog = new Blog();
 
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'body' => 'required|string|max:1000',
-                'tags' => 'required|string|max:200'
-            ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'body' => 'required|string|max:1000',
+            'tags' => 'required|string|max:200'
+        ]);
 
-            $blog = new Blog();
+        $blog->name = $request->name;
+        $blog->body = $request->body;
+        $blog->tags = $request->tags;
+        $blog->user_id = Auth()->user()->id;
+        $blog->save();
 
-            $blog->name = $request->name;
-            $blog->body = $request->body;
-            $blog->tags = $request->tags;
-            $blog->user_id = Auth::user()->id;
-
-            DB::rollBack();
-
-            DB::commit();
-
-        } catch (\Throwable $th) {
-            //throw $th;
-
-            DB::rollBack();
-        }
+        return redirect()->back();
     }
 
     /**
@@ -78,7 +68,7 @@ class BlogController extends Controller
      */
     public function edit(Blog $blog)
     {
-
+        return view('blog.edit',['blog' => $blog]);
     }
 
     /**
@@ -86,30 +76,19 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
     {
-        try {
-            
-            DB::beginTransaction();
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'body' => 'required|string|max:1000',
+            'tags' => 'required|string|max:200'
+        ]);
 
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'body' => 'required|string|max:1000',
-                'tags' => 'required|string|max:200'
-            ]);
+        $blog->name = $request->name;
+        $blog->body = $request->body;
+        $blog->tags = $request->tags;
+        $blog->updated_by = Auth()->user()->id;
+        $blog->save();
 
-            $blog->name = $request->name;
-            $blog->body = $request->body;
-            $blog->tags = $request->tags;
-            $blog->updated_by = Auth::user()->id;
-
-            DB::rollBack();
-
-            DB::commit();
-
-        } catch (\Throwable $th) {
-            //throw $th;
-            
-            DB::rollBack();
-        }
+        return redirect()->back();
     }
 
     /**
